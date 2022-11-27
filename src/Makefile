@@ -11,6 +11,7 @@ ${name}-mod:
 	${CC} ${name}-mod.o -o ${name}-mod
 
 ${name}-orig:
+	${CC} -S ${name}.c ${CFLAGS} -masm=${as-flavor} -o ${name}-orig.S  
 	${CC} -c ${name}-orig.S -o ${name}-orig.o
 	${CC} ${name}-orig.o -o ${name}-orig
 

@@ -4,8 +4,14 @@
 	.globl	func
 	.type	func, @function
 func:
+.LFB0:
+	.cfi_startproc
+	endbr64
 	push	rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
 	mov	rbp, rsp
+	.cfi_def_cfa_register 6
 	movsd	QWORD PTR -8[rbp], xmm0
 	movsd	QWORD PTR -16[rbp], xmm1
 	movsd	QWORD PTR -24[rbp], xmm2
@@ -16,13 +22,22 @@ func:
 	divsd	xmm0, xmm1
 	addsd	xmm0, QWORD PTR -8[rbp]
 	pop	rbp
+	.cfi_def_cfa 7, 8
 	ret
+	.cfi_endproc
+.LFE0:
 	.size	func, .-func
 	.globl	simpson_approximate
 	.type	simpson_approximate, @function
 simpson_approximate:
+.LFB1:
+	.cfi_startproc
+	endbr64
 	push	rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
 	mov	rbp, rsp
+	.cfi_def_cfa_register 6
 	sub	rsp, 32
 	movsd	QWORD PTR -8[rbp], xmm0
 	movsd	QWORD PTR -16[rbp], xmm1
@@ -66,7 +81,10 @@ simpson_approximate:
 	addsd	xmm0, QWORD PTR -32[rbp]
 	mulsd	xmm0, QWORD PTR -24[rbp]
 	leave
+	.cfi_def_cfa 7, 8
 	ret
+	.cfi_endproc
+.LFE1:
 	.size	simpson_approximate, .-simpson_approximate
 	.section	.rodata
 .LC3:
@@ -85,8 +103,14 @@ simpson_approximate:
 	.globl	main
 	.type	main, @function
 main:
+.LFB2:
+	.cfi_startproc
+	endbr64
 	push	rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
 	mov	rbp, rsp
+	.cfi_def_cfa_register 6
 	sub	rsp, 32
 	mov	rax, QWORD PTR fs:40
 	mov	QWORD PTR -8[rbp], rax
@@ -149,7 +173,10 @@ main:
 	call	__stack_chk_fail@PLT
 .L14:
 	leave
+	.cfi_def_cfa 7, 8
 	ret
+	.cfi_endproc
+.LFE2:
 	.size	main, .-main
 	.section	.rodata
 	.align 8
@@ -166,3 +193,19 @@ main:
 	.long	1074790400
 	.ident	"GCC: (Ubuntu 9.4.0-1ubuntu1~20.04.1) 9.4.0"
 	.section	.note.GNU-stack,"",@progbits
+	.section	.note.gnu.property,"a"
+	.align 8
+	.long	 1f - 0f
+	.long	 4f - 1f
+	.long	 5
+0:
+	.string	 "GNU"
+1:
+	.align 8
+	.long	 0xc0000002
+	.long	 3f - 2f
+2:
+	.long	 0x3
+3:
+	.align 8
+4:
